@@ -22,41 +22,31 @@ function App() {
   // const [value, setValue] = useState('Введите в ипут значение');
   // console.log(likes);
   // console.log(setLikes);
-  const [title, setTitle] = useState('');
-  const [desc, setBody] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [desc, setBody] = useState('');
+ 
  //упавляемый инпут
   const addNewPost = function (e){
       e.preventDefault();
-      const newPost={ 
-        id: Date.now(),
-        title,
-        desc
-      }
-      console.log(newPost);
-      setPosts([...posts,newPost]);
-      setTitle('');
-      setBody('');
+      //более короткая конструкция будет ниже 
+      //const newPost={ 
+      //   id: Date.now(),
+      //   title,
+      //   desc
+      // }
+      //console.log(newPost);
+     // setPosts([...posts,newPost]); более короткая конструкция будет ниже
+     //вот эты конструкция --> 
+     setPosts([...posts,{ ...post,
+        id: Date.now()
+      }]);
+      // setTitle('');
+      // setBody('');
+      setPost({title:'',desc:''});
     }
   return (
     <div className="App">
-      <form>
-        {/* управляемый инпут */}
-        <MyInput
-        value={title} 
-        onChange = {e=>setTitle(e.target.value)}
-        type='text' 
-        placeholder='Название поста' />
-         {/* <input ref={bodyInputRef}/> */}
-        
-        {/* Не управляемы компонент инпут */}
-        <MyInput 
-        value={desc} 
-        onChange = {e=>setBody(e.target.value)}
-        type='text'
-        placeholder='Текст поста' />
-         
-        <MyButton onClick={addNewPost}>Создать пост</MyButton>
-      </form>
+     
       <PostList posts={posts} title="Список постов 1" />
       <PostList posts={posts2} title="Список постов 2" />
       <Counter />
