@@ -23,12 +23,19 @@ function App() {
   // console.log(likes);
   // console.log(setLikes);
   const [title, setTitle] = useState('');
-  const bodyInputRef = useRef();
+  const [desc, setBody] = useState('');
  //упавляемый инпут
   const addNewPost = function (e){
       e.preventDefault();
-       console.log(title);
-       console.log(bodyInputRef.current.value);
+      const newPost={ 
+        id: Date.now(),
+        title,
+        desc
+      }
+      console.log(newPost);
+      setPosts([...posts,newPost]);
+      setTitle('');
+      setBody('');
     }
   return (
     <div className="App">
@@ -43,10 +50,11 @@ function App() {
         
         {/* Не управляемы компонент инпут */}
         <MyInput 
-        type='text' 
-        placeholder='Описание поста'
-        ref={bodyInputRef}
-         /> 
+        value={desc} 
+        onChange = {e=>setBody(e.target.value)}
+        type='text'
+        placeholder='Текст поста' />
+         
         <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов 1" />
