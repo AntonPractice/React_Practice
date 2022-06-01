@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PostList from './Components/PostList';
+import PostForm from './Components/PostForm';
 import Counter from './Components/Counter';
+import MySelect from './Components/UI/select/MySelect';
+
 import './styles/app.css';
-import MyButton from './Components/UI/button/MyButton';
 import MyInput from './Components/UI/Input/MyInput';
+
 
 
 function App() {
@@ -12,43 +15,59 @@ function App() {
 
 
   const [posts, setPosts] = useState([
-    { id: 1, title: 'Java', desc: 'Язык программирования 1' },
-    { id: 2, title: 'Java Script', desc: 'Язык программирования 2' },
-    { id: 3, title: 'Pyton', desc: 'Язык программирования 3' }]);
-  const [posts2, setPosts2] = useState([
-    { id: 1, title: 'Java 2', desc: 'Язык  1' },
-    { id: 2, title: 'Java Script222', desc: 'Язык  2' },
-    { id: 3, title: 'Pyton22', desc: 'Язык  3' }]);
+    { id: 1, title: 'Ada', desc: 'Язык программирования 1' },
+    { id: 2, title: 'Java Script', desc: 'Не Язык программирования 2' },
+    { id: 3, title: 'Pyton', desc: 'Он Язык программирования 3' }]);
+  const [selectedSort, setSelectedSort] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  // const [posts2, setPosts2] = useState([
+  //   { id: 1, title: 'Java 2', desc: 'Язык  1' },
+  //   { id: 2, title: 'Java Script222', desc: 'Язык  2' },
+  //   { id: 3, title: 'Pyton22', desc: 'Язык  3' }]);
   // const [value, setValue] = useState('Введите в ипут значение');
   // console.log(likes);
   // console.log(setLikes);
   // const [title, setTitle] = useState('');
   // const [desc, setBody] = useState('');
- 
- //упавляемый инпут
-  const addNewPost = function (e){
-      e.preventDefault();
-      //более короткая конструкция будет ниже 
-      //const newPost={ 
-      //   id: Date.now(),
-      //   title,
-      //   desc
-      // }
-      //console.log(newPost);
-     // setPosts([...posts,newPost]); более короткая конструкция будет ниже
-     //вот эты конструкция --> 
-     setPosts([...posts,{ ...post,
-        id: Date.now()
-      }]);
-      // setTitle('');
-      // setBody('');
-      setPost({title:'',desc:''});
-    }
+
+  const createPost = function (newPost) {
+    setPosts([...posts, newPost]);
+  }
+  const removePost = function (post) {
+    setPosts(posts.filter(p => p.id !== post.id));
+  }
+
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
+  }
+
   return (
     <div className="App">
-     
-      <PostList posts={posts} title="Список постов 1" />
-      <PostList posts={posts2} title="Список постов 2" />
+      <PostForm create={createPost} />
+      <hr style={{ margin: '15px 15px' }} />
+      <div>
+        <MyInput
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder='Поиск'
+        />
+        <MySelect
+          value={selectedSort}
+          onChange={sortPosts}
+          defaultValue='Сортировка по'
+          options={
+            [{ value: 'title', name: 'По названию' },
+            { value: 'desc', name: 'По описанию' }]
+          }
+        />
+      </div>
+      {posts.length !== 0
+        ? <PostList remove={removePost} posts={posts} title="Список постов 1" />
+        : <h1 style={{ textAlign: 'center' }}>Посты не найдены</h1>
+      }
+
+      {/* <PostList posts={posts2} title="Список постов 2" /> */}
       <Counter />
       <Counter />
       <Counter />

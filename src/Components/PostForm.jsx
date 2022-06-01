@@ -1,9 +1,31 @@
-import React,  from'react';
+import React, {useState}  from 'react';
+import MyButton from './UI/button/MyButton';
+import MyInput from './UI/Input/MyInput';
 
-const PostForm = function(){
+const PostForm = function({create}){
     const [post, setPost] = useState({title:'',desc:''});
+    const addNewPost = function (e){
+      e.preventDefault();
+      //более короткая конструкция будет ниже 
+      //const newPost={ 
+      //   id: Date.now(),
+      //   title,
+      //   desc
+      // }
+      //console.log(newPost);
+     // setPosts([...posts,newPost]); более короткая конструкция будет ниже
+     //вот эты конструкция --> 
+        const newPost={ 
+          ... post,
+        id: Date.now()
+        
+      }
+      create(newPost);
+      // setTitle('');
+      // setBody('');
+      setPost({title:'',desc:''});
+    }
     return(
-    <div>
          <form>
         {/* управляемый инпут */}
         <MyInput
@@ -23,7 +45,6 @@ const PostForm = function(){
          
         <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
-    </div>
     );
 };
 export default PostForm;
