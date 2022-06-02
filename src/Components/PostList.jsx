@@ -3,6 +3,10 @@ import Postitem from './Postitem';
 
 const PostList = function ({ posts, title, remove }) {
     // console.log(props);
+
+    if(!posts.length){
+        return (<h1 style={{ textAlign: 'center' }}>Посты не найдены</h1>)
+    }
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>
